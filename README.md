@@ -1,6 +1,6 @@
 ## TaskTracker
 
-Spring Boot REST API to manage task lists and tasks.
+TaskTracker is a clean Spring Boot REST API for organizing work into task lists and tasks. It exposes CRUD endpoints, uses layered architecture (controller → service → repository), JPA entities with DTO mappers, and ships with H2 for quick local runs or PostgreSQL via Docker for a production-like setup.
 
 ### Tech
 - **Java**: 21
@@ -51,18 +51,38 @@ The API starts on `http://localhost:8080`.
 
 ### Database
 - Default in-memory H2 for local dev.
-- For PostgreSQL, set Spring datasource properties in `application.properties`.
+- PostgreSQL ready; see Docker section to run a local Postgres easily and point Spring to it.
 
 ### Build & Test
 ```bash
 ./mvnw -q -DskipTests=false test
 ```
 
-### Docker (optional)
-If you use `docker-compose.yaml`, start services with:
+### Docker + PostgreSQL (optional)
+This project includes a `docker-compose.yaml` to spin up PostgreSQL.
+
+1) Start Postgres
 ```bash
 docker compose up -d
 ```
+
+2) Configure Spring for Postgres in `src/main/resources/application.properties` (example):
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/tasktracker
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+```
+
+3) Run the app
+```bash
+./mvnw spring-boot:run
+```
+
+Notes:
+- Update credentials/DB name to match your `docker-compose.yaml` if different.
+- Switch back to H2 by removing the Postgres properties (the default H2 dev profile will be used).
 
 ### License
 MIT
