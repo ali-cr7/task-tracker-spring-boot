@@ -8,6 +8,7 @@ import com.TaskTracker.TaskTracker.repositories.TaskListRepositories;
 import com.TaskTracker.TaskTracker.repositories.TaskRepositories;
 import com.TaskTracker.TaskTracker.services.TaskServices;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -90,7 +91,7 @@ public class TaskServicesImpl  implements TaskServices {
 
         return taskRepositories.save(existing);
     }
-
+    @Transactional
     @Override
     public void deleteTask(UUID taskListId, UUID taskId) {
         Task existing = taskRepositories.findByTaskListIdAndId(taskListId, taskId)
